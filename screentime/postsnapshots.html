@@ -1,0 +1,43 @@
+<style>
+    #textarea {
+        border: 1px #ccc solid;
+        width: 300px;
+        height: 200px;
+        overflow: auto;
+    }
+</style>
+<textarea id="textarea"></textarea>
+<script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
+<script>
+    const textarea = document.querySelector('#textarea');
+    const { fromEvent } = rxjs;
+    const { debounceTime } = rxjs.operators;
+
+    fromEvent(textarea, 'keydown').subscribe((e) => {
+        console.log(e);
+        if (e.keyCode === 9) {
+            console.log('tab is pressed');
+            e.preventDefault();
+            textarea.innerHTML += '    ';
+        }
+    })
+    fromEvent(textarea, 'input')
+        .pipe(debounceTime(3000))
+        .subscribe((e) => {
+            // console.log(e.data);
+            // console.log(textarea.value)
+            fetch('http://localhost:3000/savesnapshot', {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "cors", // no-cors, cors, *same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, same-origin, *omit
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                },
+                redirect: "follow", // manual, *follow, error
+                referrer: "no-referrer", // no-referrer, *client
+                body: JSON.stringify({ data: textarea.value }), // body data type must match "Content-Type" header
+            })
+        })
+</script>

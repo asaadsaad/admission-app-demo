@@ -1,0 +1,57 @@
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+    crossorigin="anonymous"></script>
+<script>
+    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    if (!isChrome) console.log('Not Chrome!')
+    // var time = 0, interval_id;
+    var start = Date.now();
+    var blur_start, blur_end, blur_total = 0;
+    $(function () {
+        console.log('Tab is Loaded, start counting... ');
+        // if (interval_id) clearInterval(interval_id);
+        // interval_id = setInterval(() => { time++; console.log(time) }, 1000);
+        $('body').on('copy paste', function (e) {
+            e.preventDefault(); return false;
+        });
+    })
+    $(window).on('focus', function () {
+        blur_end = Date.now();
+        blur_total += blur_end - blur_start
+        console.log('Tab is re-enabled, resume counting... ');
+        console.log(blur_total)
+        // interval_id = setInterval(() => { time++; console.log(time) }, 1000);
+    });
+
+    $(window).on('blur', function () {
+        // clearInterval(interval_id);
+        blur_start = Date.now();
+        console.log('Tab is disabled, pause...', blur_start)
+    });
+    $(window).on('unload', function (event) {
+        // clearInterval(interval_id);
+        console.log('Send data to Server. Total time: ', time)
+        // fetch('URL')
+    })
+    // window.addEventListener('load', function () {
+    //     console.log('Tab is Loaded, start counting... ');
+    //     if (interval_id) clearInterval(interval_id);
+    //     interval_id = setInterval(() => { time++; console.log(time) }, 1000);
+    // })
+    // window.addEventListener('focus', function () {
+    //     console.log('Tab is re-enabled, resume counting... ');
+    //     interval_id = setInterval(() => { time++; console.log(time) }, 1000);
+    // });
+
+    // window.addEventListener('blur', function () {
+    //     clearInterval(interval_id);
+    //     console.log('Tab is disabled, pause...', time)
+    // });
+    // window.addEventListener('beforeunload', function (event) {
+    //     clearInterval(interval_id);
+    //     console.log('Send data to Server. Total time: ', time)
+    //     // fetch('URL')
+    // })
+</script>
+
+<textarea></textarea>
+<div contenteditable="true">// Content Editable div, try to edit here</div>

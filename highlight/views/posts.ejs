@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Posts Example
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+    <link rel="stylesheet" href="http://localhost:5858/public/highlight/styles/hybrid.css">
+    <script src="http://localhost:5858/public/highlight/highlight.js"></script>
+    <style>
+        pre {
+            padding: 0;
+            /* border-radius: 10px; */
+        }
+
+        code {
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <% for(var i=0; i < data.length; i++) { %>
+
+        <h2 class="subtitle">
+            <%= data[i].title %>
+        </h2>
+        <div class="post_details">
+            <%- data[i].details %>
+        </div>
+
+        <% } %>
+
+</body>
+<script>
+    // const post_details = Array.from(document.querySelectorAll('.post_details'));
+    // console.log(post_details[0])
+    // const html_version = post_details.map((post) => {
+    //     parser = new DOMParser();
+    //     post.innerHTML = parser.parseFromString(post.innerHTML, "text/html");
+    // })
+
+    const code_sections = Array.from(document.querySelectorAll('pre code'));
+    console.log(code_sections[1])
+    code_sections.forEach(function (i, block) {
+        hljs.initHighlighting(block);
+    });
+
+</script>
+
+</html>

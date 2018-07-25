@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<style>
+    #output {
+        border: 1px #ccc solid;
+        width: 100%;
+        height: 200px;
+        overflow: auto;
+    }
+</style>
+
+<body>
+    <pre>
+        <code class="js" id="output"></code>
+    </pre>
+    <button id="play">Play</button>
+</body>
+<script>
+    const output = document.querySelector('#output');
+    const play = document.querySelector('#play');
+    let input;
+    let data;
+    fetch('http://localhost:3000/getsnapshots')
+        .then((data) => data.json())
+        .then((snaps) => {
+            // console.log(snaps);
+            input = document.createElement('input');
+            input.type = "range";
+            input.min = '1';
+            input.max = snaps.length;
+            input.value = '1';
+            input.id = 'myRange';
+            input.style = 'width: 300px'
+            document.querySelector('body').appendChild(input);
+
+            output.innerHTML = snaps[0].data;
+            hljs.highlightBlock(output);
+            input.addEventListener('change', (e) => {
+                // console.log(e.target.value);
+                output.innerHTML = snaps[e.target.value - 1].data; //.replace(/\n/g, "<br />")
+                hljs.highlightBlock(output);
+            });
+            data = snaps;
+        });
+    let interval_id;
+    play.addEventListener('click', function (e) {
+        input.value = 0
+        var event = new Event('change');
+        input.dispatchEvent(event);
+        interval_id = setInterval(() => {
+            input.value++;
+            var event = new Event('change');
+            input.dispatchEvent(event);
+            // console.log('currnet: ', parseInt(input.value), ' max: ', parseInt(input.max))
+            if (parseInt(input.value) === parseInt(input.max)) clearInterval(interval_id)
+        }, 1000)
+    })
+
+
+    // hljs.initHighlighting(output);
+    // hljs.initHighlightingOnLoad();
+
+</script>

@@ -1,0 +1,75 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+
+
+<p class="subtitle is-3" style="margin-left: 200px">Add a Post</p>
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">Title</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input id="title" class="input" type="text" placeholder="Title for your post">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">Post Details</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <textarea id="details" class="textarea" placeholder="Details about your post"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label">
+        <!-- Left empty for spacing -->
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <button class="button is-primary" id="saveButton">
+                    Save Post
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const saveButton = document.querySelector('#saveButton');
+
+
+    saveButton.addEventListener('click', (e) => {
+        const data = {
+            title: document.querySelector('#title').value,
+            details: document.querySelector('#details').value,
+        }
+        console.log(data)
+        fetch('http://localhost:5858/backend/posts', {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, same-origin, *omit
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                // "Content-Type": "application/x-www-form-urlencoded",
+            },
+            redirect: "follow", // manual, *follow, error
+            referrer: "no-referrer", // no-referrer, *client
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+        })
+            .then(response => response.json())
+            .then((response) => {
+                document.querySelector('#title').value = ''
+                document.querySelector('#details').value = ''
+                console.log(response)
+            })
+    })
+</script>
